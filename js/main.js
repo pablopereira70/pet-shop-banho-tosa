@@ -1,26 +1,19 @@
-const PRECOS = {
-  pequeno: { banho: 40, tosa: 50, hidratacao: 45, pacote: 100 },
-  medio:   { banho: 50, tosa: 60, hidratacao: 55, pacote: 120 },
-  grande:  { banho: 60, tosa: 70, hidratacao: 65, pacote: 140 }
-};
+import { Tutor }       from './models/tutor.js';
+import { Animal }      from './models/animal.js';
+import { Atendimento } from './models/atendimento.js';
+import { SERVICOS }    from './models/servico.js';
 
-const SERVICOS = [
-  { valor: "banho", label: "Banho" },
-  { valor: "tosa", label: "Tosa" },
-  { valor: "hidratacao", label: "Hidratação" },
-  { valor: "pacote", label: "Pacote completo" }
-];
+const loginView   = document.getElementById('loginView');
+const appView     = document.getElementById('appView');
+const animaisBody = document.getElementById('animaisBody');
+const resumoEl    = document.getElementById('resumo');
 
-const loginView = document.getElementById("loginView");
-const appView = document.getElementById("appView");
-const animaisBody = document.getElementById("animaisBody");
+const formatarMoeda = v =>
+  v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-function formatarMoeda(valor) {
-  return valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-}
-
+// --- Cria uma linha de animal na tabela ---
 function criarLinhaAnimal() {
-  const tr = document.createElement("tr");
+  const tr = document.createElement('tr');
   tr.innerHTML = `
     <td><input class="animal-nome" required /></td>
     <td>
@@ -32,94 +25,127 @@ function criarLinhaAnimal() {
     </td>
     <td>
       <select class="animal-servico">
-        ${SERVICOS.map(s => `<option value="${s.valor}">${s.label}</option>`).join("")}
+        ${SERVICOS.map(s => `<option value="${s.codigo}">${s.nome}</option>`).join('')}
       </select>
     </td>
     <td class="animal-preco">R$ 0,00</td>
     <td><button type="button" class="remover">Remover</button></td>
   `;
 
-  tr.querySelector(".remover").addEventListener("click", () => {
+  tr.querySelector('.remover').addEventListener('click', () => {
     tr.remove();
     recalcular();
   });
-
-  tr.querySelectorAll("select").forEach(select => {
-    select.addEventListener("change", recalcular);
-  });
+  tr.querySelectorAll('select, .animal-nome')
+    .forEach(el => el.addEventListener('change', recalcular));
 
   animaisBody.appendChild(tr);
   recalcular();
 }
 
-function calcularTotais() {
-  const linhas = [...animaisBody.querySelectorAll("tr")];
-  let subtotal = 0;
+// --- Lê o formulário e monta o Atendimento ---
+function lerAtendimento() {
+  const tutor = new Tutor(
+    document.getElementById('tutorNome').value.trim(),
+    document.getElementById('tutorTelefone').value.trim()
+  );
 
-  linhas.forEach(tr => {
-    const porte = tr.querySelector(".animal-porte").value;
-    const servico = tr.querySelector(".animal-servico").value;
-    const preco = PRECOS[porte][servico];
-    tr.querySelector(".animal-preco").textContent = formatarMoeda(preco);
-    subtotal += preco;
+  const animais = [...animaisBody.querySelectorAll('tr')].map(tr => {
+    const codigo  = tr.querySelector('.animal-servico').value;
+    const servico = SERVICOS.find(s => s.codigo === codigo) ?? SERVICOS[0];
+    return new Animal(
+      tr.querySelector('.animal-nome').value.trim(),
+      tr.querySelector('.animal-porte').value,
+      servico
+    );
   });
 
-  const qtd = linhas.length;
-  const percentual = qtd >= 3 ? 0.10 : qtd === 2 ? 0.05 : 0;
-  const desconto = subtotal * percentual;
-  const total = subtotal - desconto;
-
-  document.getElementById("subtotal").textContent = formatarMoeda(subtotal);
-  document.getElementById("desconto").textContent = formatarMoeda(desconto);
-  document.getElementById("total").textContent = formatarMoeda(total);
+  return new Atendimento(tutor, animais);
 }
 
+// --- Recalcula preços das linhas e os totais ---
 function recalcular() {
-  calcularTotais();
+  const a = lerAtendimento();
+
+  [...animaisBody.querySelectorAll('tr')].forEach((tr, i) => {
+    tr.querySelector('.animal-preco').textContent = formatarMoeda(a.animais[i].preco);
+  });
+
+  document.getElementById('subtotal').textContent = formatarMoeda(a.subtotal);
+  document.getElementById('desconto').textContent = formatarMoeda(a.desconto);
+  document.getElementById('total').textContent    = formatarMoeda(a.total);
 }
 
-// Login simulado
-document.getElementById("loginForm").addEventListener("submit", (e) => {
+// --- Login ---
+document.getElementById('loginForm').addEventListener('submit', (e) => {
   e.preventDefault();
-  const usuario = document.getElementById("usuario").value.trim();
-  const senha = document.getElementById("senha").value.trim();
+  const user = document.getElementById('usuario').value.trim();
+  const pass = document.getElementById('senha').value.trim();
 
-  if (usuario === "admin" && senha === "1234") {
-    sessionStorage.setItem("logado", "true");
-    loginView.classList.add("hidden");
-    appView.classList.remove("hidden");
+  if (user === 'admin' && pass === '1234') {
+    sessionStorage.setItem('logado', 'true');
+    loginView.classList.add('hidden');
+    appView.classList.remove('hidden');
+    document.getElementById('loginErro').textContent = '';
   } else {
-    document.getElementById("loginErro").textContent = "Usuário ou senha inválidos.";
+    document.getElementById('loginErro').textContent = 'Usuário ou senha inválidos.';
   }
 });
 
-document.getElementById("sair").addEventListener("click", () => {
-  sessionStorage.removeItem("logado");
-  appView.classList.add("hidden");
-  loginView.classList.remove("hidden");
+// --- Sair ---
+document.getElementById('sair').addEventListener('click', () => {
+  sessionStorage.removeItem('logado');
+  appView.classList.add('hidden');
+  loginView.classList.remove('hidden');
 });
 
-document.getElementById("addAnimal").addEventListener("click", criarLinhaAnimal);
+// --- Adicionar animal ---
+document.getElementById('addAnimal').addEventListener('click', criarLinhaAnimal);
 
-document.getElementById("atendimentoForm").addEventListener("submit", (e) => {
+// --- Registrar ---
+document.getElementById('atendimentoForm').addEventListener('submit', (e) => {
   e.preventDefault();
-  const tutor = document.getElementById("tutorNome").value;
-  const telefone = document.getElementById("tutorTelefone").value;
-  const total = document.getElementById("total").textContent;
+  const r = lerAtendimento().resumo();
 
-  document.getElementById("resumo").classList.remove("hidden");
-  document.getElementById("resumo").innerHTML = `
+  resumoEl.innerHTML = `
     <h2>Atendimento registrado</h2>
-    <p><strong>Tutor:</strong> ${tutor}</p>
-    <p><strong>Telefone:</strong> ${telefone}</p>
-    <p><strong>Total:</strong> ${total}</p>
+    <p><strong>Tutor:</strong> ${r.tutor.nome} — ${r.tutor.telefone}</p>
+    <ul>
+      ${r.animais.map(a =>
+        `<li>${a.nome} (${a.porte}, ${a.servico}) — ${formatarMoeda(a.preco)}</li>`
+      ).join('')}
+    </ul>
+    <p>
+      Subtotal: ${formatarMoeda(r.subtotal)} |
+      Desconto: ${formatarMoeda(r.desconto)} |
+      <strong>Total: ${formatarMoeda(r.total)}</strong>
+    </p>
   `;
+  resumoEl.classList.remove('hidden');
 });
 
-// Se já estiver logado na sessão
-if (sessionStorage.getItem("logado") === "true") {
-  loginView.classList.add("hidden");
-  appView.classList.remove("hidden");
-}
+// --- Máscara de telefone: (11) 91234-5678 ---
+const telefoneInput = document.getElementById('tutorTelefone');
 
+telefoneInput.addEventListener('input', () => {
+  let v = telefoneInput.value.replace(/\D/g, '').slice(0, 11);
+
+  if (v.length > 10) {
+    v = v.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
+  } else if (v.length > 6) {
+    v = v.replace(/^(\d{2})(\d{4})(\d{0,4})$/, '($1) $2-$3');
+  } else if (v.length > 2) {
+    v = v.replace(/^(\d{2})(\d{0,5})$/, '($1) $2');
+  } else if (v.length > 0) {
+    v = v.replace(/^(\d{0,2})$/, '($1');
+  }
+
+  telefoneInput.value = v;
+});
+
+// --- Inicialização ---
+if (sessionStorage.getItem('logado') === 'true') {
+  loginView.classList.add('hidden');
+  appView.classList.remove('hidden');
+}
 criarLinhaAnimal();
