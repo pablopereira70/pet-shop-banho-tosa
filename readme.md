@@ -37,9 +37,9 @@ desejado para cada um. O sistema calcula o valor total ao final.
 
 ## Casos de uso e diagramas
 
-[Casos de uso](.\docs\casos.md)
+[Casos de uso](docs/casos.md)
 
-[Diagramas de sequência](.\docs\diagramas.md)
+[Diagramas de sequência](docs/diagramas.md)
 
 ## Limitações
 
