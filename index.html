@@ -25,7 +25,10 @@
 
     <form id="atendimentoForm" class="card">
       <label>Tutor <input id="tutorNome" required /></label>
-      <label>Telefone <input id="tutorTelefone" required /></label>
+      <label>Telefone
+        <input id="tutorTelefone" type="tel" inputmode="numeric" maxlength="15"
+              placeholder="(99) 99999-9999" required />
+      </label>
 
       <h2>Animais</h2>
       <table>
