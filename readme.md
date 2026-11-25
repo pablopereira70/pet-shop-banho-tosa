@@ -27,17 +27,19 @@ desejado para cada um. O sistema calcula o valor total ao final.
 
 ## Credenciais de teste
 
-Usuário: `admin`
+- Usuário: `admin`
 
-Senha `1234`
+- Senha: `1234`
 
 ## Estrutura de repositório
 
 <!-- estrutura -->
 
-## Diagramas
+## Casos de uso e diagramas
 
-<!-- preview -->
+[Casos de uso](.\docs\casos.md)
+
+[Diagramas de sequência](.\docs\diagramas.md)
 
 ## Limitações
 
