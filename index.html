@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pet Shop - Banho e Tosa</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <section id="loginView" class="card">
+    <h1>Pet Shop - Login</h1>
+    <form id="loginForm">
+      <label>Usuário <input id="usuario" required /></label>
+      <label>Senha <input id="senha" type="password" required /></label>
+      <button type="submit">Entrar</button>
+      <p id="loginErro" class="erro"></p>
+    </form>
+  </section>
+
+  <section id="appView" class="hidden">
+    <header class="topo">
+      <h1>Pet Shop - Banho e Tosa</h1>
+      <button id="sair">Sair</button>
+    </header>
+
+    <form id="atendimentoForm" class="card">
+      <label>Tutor <input id="tutorNome" required /></label>
+      <label>Telefone <input id="tutorTelefone" required /></label>
+
+      <h2>Animais</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Porte</th>
+            <th>Serviço</th>
+            <th>Preço</th>
+            <th>Ação</th>
+          </tr>
+        </thead>
+        <tbody id="animaisBody"></tbody>
+      </table>
+
+      <button type="button" id="addAnimal">+ Adicionar animal</button>
+
+      <div class="totais">
+        <p>Subtotal: <strong id="subtotal">R$ 0,00</strong></p>
+        <p>Desconto: <strong id="desconto">R$ 0,00</strong></p>
+        <p>Total: <strong id="total">R$ 0,00</strong></p>
+      </div>
+
+      <button type="submit">Registrar</button>
+    </form>
+
+    <div id="resumo" class="card hidden"></div>
+  </section>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
