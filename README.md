@@ -24,7 +24,7 @@ O objetivo é oferecer uma interface simples e organizada para que o estabelecim
 ## 📍 Funcionalidades
 
 - Cadastro de tutores (nome, telefone)
-- Cadastro de animais vinculados a um tutor
+- Cadastro de animais (nome, porte) vinculados a um tutor
 - Cadastro de serviços (banho, tosa, hidratação, etc.) com preços
 - Registro de atendimentos (tutor, animal, serviço, valor)
 - Cálculo de valor total
