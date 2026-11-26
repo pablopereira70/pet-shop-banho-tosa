@@ -14,14 +14,14 @@ O objetivo é oferecer uma interface simples e organizada para que o estabelecim
 
 </div>
 
-## Integrantes
+## 👥 Integrantes
 
 | Nome | Github | Linkedin |
 | :---: | :---: | :---: |
 | Pablo Pereira | [![Github](https://img.shields.io/badge/pablopereira70-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/pablopereira70) | [![LinkedIn](https://img.shields.io/badge/pablopereira70-0A66C2?style=flat-square)](https://www.linkedin.com/in/pablopereira70/) |
 | Pedro Sousa | [![Github](https://img.shields.io/badge/P3drosous4-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/P3drosous4) | [![LinkedIn](https://img.shields.io/badge/pedro--sous4-0A66C2?style=flat-square)](https://www.linkedin.com/in/pedro-sous4/) |
 
-## Funcionalidades
+## 📍 Funcionalidades
 
 - Cadastro de tutores (nome, telefone)
 - Cadastro de animais vinculados a um tutor
@@ -30,7 +30,7 @@ O objetivo é oferecer uma interface simples e organizada para que o estabelecim
 - Cálculo de valor total
 - Cálculo de desconto (Metódo escolhindo pelos integrantes)
 
-## Regras de preço e desconto
+## 🔒 Regras de preço e desconto
 
 **Tabela de precificação por porte:**
 
@@ -48,7 +48,7 @@ O objetivo é oferecer uma interface simples e organizada para que o estabelecim
 
 O total exibido deve mostrar subtotal, desconto e total final.
 
-## Estrutura de repositório
+## 📂 Estrutura de repositório
 
 ```text
 pet-shop-banho-tosa/
@@ -68,7 +68,7 @@ pet-shop-banho-tosa/
 └── README.md
 ```
 
-## Como Executar
+## ▶️ Como Executar
 
 Como o projeto é front-end e não possui backend, os testes são realizados diretamente na interface:
 
